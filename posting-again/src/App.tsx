@@ -1,34 +1,46 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useEffect, useState } from "react"
+import "./App.css"
 
 function App() {
-  const [count, setCount] = useState(0)
+  interface User {
+    username: string
+    hairColor: string
+  }
+
+  const url: string = "http://localhost:8080/create-user"
+  const [successMessage, setSuccessMessage] = useState("")
+  const user: User = {
+    username: "KD",
+    hairColor: "brown",
+  }
+
+  useEffect(() => {
+    console.log(JSON.stringify(user))
+    fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(user),
+    })
+      .then(res => res.json())
+      .then(message => setSuccessMessage(message.yay))
+  }, [])
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div className="flex flex-col">
+      <div className="text-2xl">Let's create a user</div>
+      <div>Give out your info below</div>
+      <div className="flex flex-col gap-1">
+        <div>
+          Your name: <input className="rounded-md" />
+        </div>
+        <div>
+          Hair color: <input className="rounded-md" />
+        </div>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+      <div>(The backend response should go here): {successMessage}</div>
+    </div>
   )
 }
 
