@@ -4,42 +4,61 @@ import "./App.css"
 function App() {
   interface User {
     username: string
-    hairColor: string
+    coatColor: string
   }
 
-  const url: string = "http://localhost:8080/create-user"
+  const createUserUrl: string = "http://localhost:8080/create-user"
+  const getUserUrl: string = "http://localhost:8080/get-users"
   const [successMessage, setSuccessMessage] = useState("")
-  const user: User = {
-    username: "KD",
-    hairColor: "brown",
+  const [user, setUser] = useState<User>()
+
+  // to practice POST request
+  const hardcodedUser: User = {
+    username: "Mal",
+    coatColor: "brown",
   }
 
   useEffect(() => {
-    console.log(JSON.stringify(user))
-    fetch(url, {
+    fetch(createUserUrl, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(user),
+      body: JSON.stringify(hardcodedUser),
     })
       .then(res => res.json())
-      .then(message => setSuccessMessage(message.yay))
+      .then(message => {
+        setSuccessMessage(message.yay)
+        return fetch(getUserUrl)
+      })
+      .then(res => res.json())
+      .then(data => {
+        console.log(data)
+        setUser({ username: data.username, coatColor: data.coatColor })
+      })
   }, [])
 
   return (
-    <div className="flex flex-col">
-      <div className="text-2xl">Let's create a user</div>
-      <div>Give out your info below</div>
+    <div className="flex flex-col items-center">
+      <div className="text-2xl underline">Create a user from Serenity's crew</div>
+      <div>Tell your tale below</div>
       <div className="flex flex-col gap-1">
         <div>
           Your name: <input className="rounded-md" />
         </div>
         <div>
-          Hair color: <input className="rounded-md" />
+          Color of your coat: <input className="rounded-md" />
         </div>
       </div>
-      <div>(The backend response should go here): {successMessage}</div>
+      <div>Backend response?: {successMessage}</div>
+      <div className="flex flex-col">
+        {user && (
+          <div className="flex gap-4" key={user.username}>
+            <div>Name: {user.username}</div>
+            <div>Coat: {user.coatColor}</div>
+          </div>
+        )}
+      </div>
     </div>
   )
 }
