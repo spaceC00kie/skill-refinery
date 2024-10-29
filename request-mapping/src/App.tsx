@@ -8,8 +8,12 @@ function App() {
     color: string
   }
 
-  const pokemonListUrl: string = "http://localhost:8080/pokemon/list"
-  const postingUrl: string = "http://localhost:8080/pokemon/add"
+  const baseUrl: string = "http://localhost:8080/pokemon"
+
+  const pokemonListUrl: string = `${baseUrl}/list`
+  const postingUrl: string = `${baseUrl}/add`
+  const deletingUrl: string = `${baseUrl}/delete`
+
   const [newPokeName, setNewPokeName] = useState("")
   const [newPokeColor, setNewPokeColor] = useState("")
   const [newPokeId, setNewPokeId] = useState<number>()
@@ -25,6 +29,16 @@ function App() {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(newPokemon),
+    })
+      .then(res => res.json())
+      .then(setPokemonList)
+  }
+
+  function DeletePokemon(id: number, name: string, color: string) {
+    fetch(deletingUrl, {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id: id, name: name, color: color }),
     })
       .then(res => res.json())
       .then(setPokemonList)
@@ -71,15 +85,27 @@ function App() {
           </div>
         </div>
       </div>
-      <button className="border border-gray-400" onClick={PostNewPokemon}>
+      <button
+        className="border border-gray-400 hover:border-green-300"
+        onClick={PostNewPokemon}
+      >
         Create pokemon
       </button>
       <div className="">
         <div>List of all the Pokemon in our system:</div>
         {pokemonList?.map((pokemon, index) => (
-          <div key={index} className="flex gap-2 border rounded-sm">
+          <div
+            key={index}
+            className="flex items-center justify-between gap-2 rounded-sm border px-2"
+          >
             <div>Name: {pokemon.name}</div>
             <div>Color: {pokemon.color}</div>
+            <button
+              className="h-3 w-3 rounded-full border border-red-600 bg-red-500 hover:bg-red-800"
+              onClick={() =>
+                DeletePokemon(pokemon.id, pokemon.name, pokemon.color)
+              }
+            ></button>
           </div>
         ))}
       </div>

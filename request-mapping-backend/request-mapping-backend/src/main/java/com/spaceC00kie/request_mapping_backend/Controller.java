@@ -20,4 +20,10 @@ public class Controller {
         pokemonList.add(pokemon);
         return pokemonList;
     }
+
+    @DeleteMapping("/delete")
+    public List<Pokemon> delete(@RequestBody Pokemon pokemon) {
+        pokemonList.remove(pokemon);
+        return pokemonList;
+    }
 }
