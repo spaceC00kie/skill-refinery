@@ -3,6 +3,7 @@ package com.spaceC00kie.request_mapping_backend;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:5173")
@@ -24,6 +25,12 @@ public class Controller {
     @DeleteMapping("/delete")
     public List<Pokemon> delete(@RequestBody Pokemon pokemon) {
         pokemonList.remove(pokemon);
+        return pokemonList;
+    }
+
+    @PatchMapping("/patch")
+    public List<Pokemon> patch(@RequestBody Pokemon newPokemon) {
+        pokemonList = pokemonList.parallelStream().map((oldPokemon) -> oldPokemon.id() == newPokemon.id() ? newPokemon : oldPokemon).collect(Collectors.toList());
         return pokemonList;
     }
 }
