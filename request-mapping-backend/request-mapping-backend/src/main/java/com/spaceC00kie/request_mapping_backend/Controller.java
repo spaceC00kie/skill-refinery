@@ -30,7 +30,9 @@ public class Controller {
 
     @PatchMapping("/patch")
     public List<Pokemon> patch(@RequestBody Pokemon newPokemon) {
-        pokemonList = pokemonList.parallelStream().map((oldPokemon) -> oldPokemon.id() == newPokemon.id() ? newPokemon : oldPokemon).collect(Collectors.toList());
+        pokemonList = pokemonList.parallelStream()
+                .map((oldPokemon) -> oldPokemon.id() == newPokemon.id() ? newPokemon : oldPokemon)
+                .collect(Collectors.toList());
         return pokemonList;
     }
 }
