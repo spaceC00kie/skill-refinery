@@ -35,6 +35,12 @@ function App() {
     setId("")
   }
 
+  const clearForm = () => {
+    setName("")
+    setColor("")
+    setId("")
+  }
+
   const addPokemon = () => {
     fetch(postingUrl, {
       method: "POST",
@@ -43,6 +49,7 @@ function App() {
     })
       .then(res => res.json())
       .then(setPokemonList)
+      .then(() => clearForm())
   }
 
   const editPokemon = () => {
@@ -78,6 +85,7 @@ function App() {
         <div>
           Id:
           <input
+            value={id}
             type="number"
             className="rounded-md"
             onChange={e => setId(e.target.value)}
@@ -86,6 +94,7 @@ function App() {
         <div>
           Name:
           <input
+            value={name}
             className="rounded-md"
             onChange={e => setName(e.target.value)}
           />
@@ -93,6 +102,7 @@ function App() {
         <div>
           Color:
           <input
+            value={color}
             className="rounded-md"
             onChange={e => setColor(e.target.value)}
           />
