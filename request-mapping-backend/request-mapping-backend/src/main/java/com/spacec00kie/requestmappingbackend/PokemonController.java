@@ -2,6 +2,7 @@ package com.spacec00kie.requestmappingbackend;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import redis.clients.jedis.UnifiedJedis;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -12,6 +13,13 @@ import java.util.stream.Collectors;
 public class PokemonController {
     @Autowired
     PokemonService PokemonService;
+    @Autowired
+    private PokemonService pokemonService;
+
+    @GetMapping("/proof")
+    public String proof(){
+        return pokemonService.proofRedisWorks();
+    }
 
     @GetMapping("/list")
     public List<Pokemon> list() {
