@@ -118,14 +118,14 @@ function App() {
       </div>
       {editing ? (
         <button
-          className="border border-gray-400 hover:border-green-300"
+          className="rounded-md border border-gray-400 hover:border-green-300"
           onClick={editPokemon}
         >
           Save edit
         </button>
       ) : (
         <button
-          className="border border-gray-400 hover:border-green-300"
+          className="rounded-md border border-gray-400 hover:border-green-300"
           onClick={addPokemon}
         >
           Create pokemon
@@ -136,7 +136,7 @@ function App() {
         {pokemonList?.map((pokemon, index) => (
           <div
             key={index}
-            className="flex items-center justify-between gap-2 rounded-sm border px-2"
+            className="flex items-center justify-between gap-2 rounded-sm border border-stone-700 bg-stone-900 px-2"
           >
             <div>Name: {pokemon.name}</div>
             <div>Color: {pokemon.color}</div>
