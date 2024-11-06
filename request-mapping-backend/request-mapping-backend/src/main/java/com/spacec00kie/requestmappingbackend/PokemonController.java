@@ -2,7 +2,6 @@ package com.spacec00kie.requestmappingbackend;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import redis.clients.jedis.UnifiedJedis;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -12,9 +11,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/pokemon")
 public class PokemonController {
     @Autowired
-    PokemonService PokemonService;
-    @Autowired
-    private PokemonService pokemonService;
+    PokemonService pokemonService;
 
     @GetMapping("/proof")
     public String proof(){
@@ -23,26 +20,26 @@ public class PokemonController {
 
     @GetMapping("/list")
     public List<Pokemon> list() {
-        return PokemonService.pokemonList;
+        return pokemonService.pokemonList;
     }
 
     @PostMapping("/add")
     public List<Pokemon> add(@RequestBody Pokemon pokemon) {
-        PokemonService.pokemonList.add(pokemon);
-        return PokemonService.pokemonList;
+        pokemonService.pokemonList.add(pokemon);
+        return pokemonService.pokemonList;
     }
 
     @DeleteMapping("/delete")
     public List<Pokemon> delete(@RequestBody Pokemon pokemon) {
-        PokemonService.pokemonList.remove(pokemon);
-        return PokemonService.pokemonList;
+        pokemonService.pokemonList.remove(pokemon);
+        return pokemonService.pokemonList;
     }
 
     @PatchMapping("/patch")
     public List<Pokemon> patch(@RequestBody Pokemon newPokemon) {
-        PokemonService.pokemonList = PokemonService.pokemonList.parallelStream()
+        pokemonService.pokemonList = pokemonService.pokemonList.parallelStream()
                 .map((oldPokemon) -> oldPokemon.id() == newPokemon.id() ? newPokemon : oldPokemon)
                 .collect(Collectors.toList());
-        return PokemonService.pokemonList;
+        return pokemonService.pokemonList;
     }
 }
