@@ -1,8 +1,10 @@
 package com.spacec00kie.requestmappingbackend;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -14,32 +16,27 @@ public class PokemonController {
     PokemonService pokemonService;
 
     @GetMapping("/proof")
-    public String proof(){
+    public String proof() {
         return pokemonService.proofRedisWorks();
     }
 
     @GetMapping("/list")
-    public List<Pokemon> list() {
-        return pokemonService.pokemonList;
+    public List<Pokemon> list() throws IOException {
+        return pokemonService.getPokemonList();
     }
 
     @PostMapping("/add")
-    public List<Pokemon> add(@RequestBody Pokemon pokemon) {
-        pokemonService.pokemonList.add(pokemon);
-        return pokemonService.pokemonList;
+    public List<Pokemon> add(@RequestBody Pokemon pokemon) throws IOException {
+        return pokemonService.addPokemon(pokemon);
     }
 
     @DeleteMapping("/delete")
-    public List<Pokemon> delete(@RequestBody Pokemon pokemon) {
-        pokemonService.pokemonList.remove(pokemon);
-        return pokemonService.pokemonList;
+    public List<Pokemon> delete(@RequestBody Pokemon pokemon) throws IOException {
+        return pokemonService.deletePokemon(pokemon);
     }
 
     @PatchMapping("/patch")
-    public List<Pokemon> patch(@RequestBody Pokemon newPokemon) {
-        pokemonService.pokemonList = pokemonService.pokemonList.parallelStream()
-                .map((oldPokemon) -> oldPokemon.id() == newPokemon.id() ? newPokemon : oldPokemon)
-                .collect(Collectors.toList());
-        return pokemonService.pokemonList;
+    public List<Pokemon> patch(@RequestBody Pokemon pokemon) throws IOException {
+        return pokemonService.addPokemon(pokemon);
     }
 }
