@@ -2,7 +2,7 @@ package com.spacec00kie.requestmappingbackend;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import redis.clients.jedis.UnifiedJedis;
+import redis.clients.jedis.Jedis;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -12,16 +12,15 @@ import java.util.Map;
 @Service
 public class PokemonService {
 
-    private final UnifiedJedis r;
+    private final Jedis r;
 
     @Autowired
-    public PokemonService(UnifiedJedis jedis) {
+    public PokemonService(Jedis jedis) {
         this.r = jedis;
     }
 
     public String proofRedisWorks() {
-        String bar = r.get("foo");
-        return bar;
+        return r.get("foo");
     }
 
     public List<Pokemon> getPokemonList() throws IOException {

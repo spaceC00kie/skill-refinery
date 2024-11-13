@@ -3,6 +3,7 @@ package com.spacec00kie.requestmappingbackend;
 import jakarta.annotation.PostConstruct;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import redis.clients.jedis.Jedis;
 import redis.clients.jedis.UnifiedJedis;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,12 +13,12 @@ import org.slf4j.LoggerFactory;
 public class RedisConfig {
 
     private static final Logger log = LoggerFactory.getLogger(RedisConfig.class);
-    private UnifiedJedis jedis;
+    private Jedis jedis;
 
     @PostConstruct
     public void connect() {
         try {
-            jedis = new UnifiedJedis("redis://localhost:6379");
+            jedis = new Jedis("redis://localhost:6379/0");
             log.info("Successfully connected to Redis");
         } catch (Exception e) {
             log.error("Failed to connect to Redis", e);
@@ -25,7 +26,7 @@ public class RedisConfig {
     }
 
     @Bean
-    public UnifiedJedis jedisClient() {
+    public Jedis jedisClient() {
         return jedis;
     }
 }
