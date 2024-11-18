@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 class PokemonControllerTest {
@@ -42,6 +42,7 @@ class PokemonControllerTest {
 
     @Test
     void proof() {
+        r.set("foo", "bar");
         String itWorks = pokemonController.proof();
         assertEquals("bar", itWorks);
     }
@@ -64,17 +65,31 @@ class PokemonControllerTest {
         List<Pokemon> actual = pokemonController.add(ivysaur);
 
         List<Pokemon> expected = new ArrayList<>();
-        expected.add(ivysaur);
         expected.add(bulbasaur);
+        expected.add(ivysaur);
 
         assertEquals(expected, actual);
     }
 
     @Test
-    void delete() {
+    void delete() throws IOException {
+        Pokemon bulbasaur = new Pokemon(1, "Bulbasaur", "green");
+        List<Pokemon> actual = pokemonController.delete(bulbasaur);
+
+        List<Pokemon> expected = new ArrayList<>();
+
+        assertEquals(expected, actual);
     }
 
     @Test
-    void patch() {
+    void patch() throws IOException {
+        Pokemon bulbasaur = new Pokemon(1, "Bulbasaurrrr", "greenish");
+
+        List<Pokemon> actual = pokemonController.patch(bulbasaur);
+
+        List<Pokemon> expected = new ArrayList<>();
+        expected.add(bulbasaur);
+
+        assertEquals(expected, actual);
     }
 }
